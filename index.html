@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Desafio Pentest 2: Portal Moderno</title>
+</head>
+<body>
+  <h1>Portal de Comentários</h1>
+  <form id="loginForm">
+    <input name="user" placeholder="Usuário"><br>
+    <input name="pass" placeholder="Senha" type="password"><br>
+    <button type="submit">Entrar</button>
+  </form>
+  <div id="msg"></div>
+  <hr>
+  <h2>Deixe um comentário</h2>
+  <form id="comForm">
+    <input name="coment" placeholder="Seu comentário"><br>
+    <button type="submit">Enviar</button>
+  </form>
+  <div id="coms"></div>
+  <hr>
+  <h2>SSH (simulado)</h2>
+  <form id="sshForm">
+    <input name="user" placeholder="Usuário SSH"><br>
+    <input name="pass" placeholder="Senha SSH" type="password"><br>
+    <button type="submit">Acessar SSH</button>
+  </form>
+  <div id="sshmsg"></div>
+  <script>
+    // Login burro: user=usuario, pass=senha
+    document.getElementById('loginForm').onsubmit = function(e) {
+      e.preventDefault();
+      if (this.user.value === 'usuario' && this.pass.value === 'senha') {
+        document.getElementById('msg').innerText = "Login ok! Flag: FLAG-LOGIN2";
+      } else {
+        document.getElementById('msg').innerText = "Login falhou!";
+      }
+    };
+    // Comentário vulnerável a XSS
+    document.getElementById('comForm').onsubmit = function(e) {
+      e.preventDefault();
+      var c = this.coment.value;
+      document.getElementById('coms').innerHTML += "<div>"+c+"</div>";
+    };
+    // SSH com senha padrão (user: ssh, senha: portal)
+    document.getElementById('sshForm').onsubmit = function(e) {
+      e.preventDefault();
+      if (this.user.value === 'ssh' && this.pass.value === 'portal') {
+        document.getElementById('sshmsg').innerText = "SSH ok! Flag: FLAG-SSH2";
+      } else {
+        document.getElementById('sshmsg').innerText = "Acesso SSH negado!";
+      }
+    };
+  </script>
+</body>
+</html>
